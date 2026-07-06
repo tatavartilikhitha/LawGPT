@@ -11,8 +11,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from streamlit_mic_recorder import speech_to_text
 from gtts import gTTS
 
+if "start_chat" not in st.session_state:
+    st.session_state.start_chat = False
 st.set_page_config(
-    page_title="⚖️ LawGPT",
+    page_title="LawGPT",
     page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -31,13 +33,49 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 # Streamlit
 # -----------------------
 
-st.set_page_config(
-    page_title="⚖️ LawGPT",
-    page_icon="⚖️",
-    layout="wide"
-)
 # Paste here 👇
 
+if not st.session_state.start_chat:
+
+    st.image("banner.png.png", use_container_width=True)
+
+    st.title("⚖️ LawGPT")
+    st.subheader("Your AI Legal Assistant")
+    st.write("""
+             Ask questions related to Indian Penal Code (IPC).
+             
+             📄Upload legal PDFs
+
+            🎤Voice input support
+             
+             🌐Supports 4 languages
+             """)
+             
+
+    col1,col2,col3,col4=st.columns(4)
+
+    with col1:
+        st.info("⚖️\n\nIPC Laws")
+
+    with col2:
+        st.info("📄\n\nUpload PDF")
+
+    with col3:
+        st.info("🎤\n\nVoice Input")
+
+    with col4:
+        st.info("🌐\n\n4 Languages")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    if st.button("🚀 Start Chat",use_container_width=True):
+        st.session_state.start_chat=True
+        st.rerun()
+
+    st.stop()
+    if st.sidebar.button("Home"):
+        st.session_state.start_chat=False
+        st.rerun()
 with st.sidebar:
 
     language = st.selectbox(
@@ -66,73 +104,8 @@ with st.sidebar:
 
     col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.metric("🤖 AI Model", "Gemini 2.5 Flash")
-
-with col2:
-    st.metric("📚 Vector DB", "FAISS")
-
-with col3:
-    st.metric("🌍 Languages", "4")
-
     uploaded_file=st.file_uploader("Upload a legal PDF",type=["pdf"])
 
-st.markdown("""
-<style>
-
-#MainMenu {visibility:hidden;}
-footer {visibility:hidden;}
-
-.stButton>button{
-    background:#ff4b4b;
-    color:white;
-    border-radius:8px;
-}
-            
-            /*New CSS*/
-            .main{
-            background-color: #0E1117;
-            }
-            .stApp{
-            background:linear-gradient(135deg, #0E1117,#1B263B);
-            }
-            h1{color:#00E5FF;
-            text-align:center;
-            font-weight:bold;}
-            div[data-testid="stChatMessage"]{
-            border-radius: 15px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color:rgba(225,225,225,0.05);}
-            section[data-testid="stSidebar"]{
-            background-color:#111827;
-            }
-
-</style>
-""", unsafe_allow_html=True)
-
-st.title("⚖️ LawGPT")
-st.caption("RAG Based Generative AI Attorney Chatbot")
-st.info("""
-👋 **Welcome to LawGPT**
-
-⚖️ Ask questions about the Indian Penal Code (IPC)
-📄 Upload your own PDF and chat with it
-🎤 Use voice input and audio output
-🌍 Get answers in multiple languages
-
-**Try asking:**
-• What is IPC Section 302?
-• Explain IPC Section 420
-• What are the rights of an accused person?
-""")
-st.markdown("""
-### RAG Based Generative AI Attorney Chatbot
-
-Powered by **Google Gemini • FAISS • LangChain**
-
----
-""")
 
 # -----------------------
 # Chat Memory
@@ -196,11 +169,6 @@ if uploaded_file:
 # -----------------------
 # Show Old Chats
 # -----------------------
-
-for msg in st.session_state.messages:
-
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
 
 # -----------------------
 # User Question
@@ -313,7 +281,6 @@ Answer:
             file_name="lawGPT_answer.txt",
             mime="text/plain"
         )
-        st.code(full, language="text")
         st.markdown("---")
         st.subheader("📚 Sources Used")
 
