@@ -1,6 +1,6 @@
 streamlit
-google_generativeai
-python-dotenv
+google_genai
+python_dotenv
 pypdf
 langchain
 langchain_community
@@ -8,6 +8,8 @@ langchain_huggingface
 langchain_text_splitters
 faiss_cpu
 sentence_transformers
-streamlit_mic_recorder 
+streamlit_mic_recorder
+gTTS
+torch
 torchvision
-gTTS 
+transformers
