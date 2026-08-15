@@ -1,9 +1,12 @@
 streamlit
+google-generativeai
+python-dotenv
+pypdf
 langchain
 langchain-community
-langchain-google-genai
-google-generativeai
+langchain-huggingface
+langchain-text-splitters
 faiss-cpu
-pypdf
-python-dotenv
-sentence-transformers 
+sentence-transformers
+streamlit-mic-recorder
+gTTS 
